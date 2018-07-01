@@ -3,6 +3,26 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+/*Mongo */
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/sozumolsun');
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function () {
+  console.log('Mongo Working');
+});
+
+var categoriesSchema = mongoose.Schema({
+  _id:String,
+  children:Array,
+  name: String,
+});
+var categories = mongoose.model('categories', categoriesSchema);
+categories.find(function (err, col) {
+  if (err) return console.error(err);
+  console.log(col);
+})
+/*Mongo End */
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
